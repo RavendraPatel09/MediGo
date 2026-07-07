@@ -74,10 +74,27 @@ export default function Nearby() {
               <Input placeholder="Search location..." className="pl-10 bg-surface/90 backdrop-blur-md border-white/20" />
             </div>
           </div>
-            ))}
-          </MapContainer>
+          <div className="h-[600px] rounded-2xl overflow-hidden border border-white/10 relative z-0">
+            <MapContainer {...{center: [51.505, -0.09] as any, zoom: 13, className: "w-full h-full rounded-lg z-0", zoomControl: false}}>
+              <TileLayer
+                {...{
+                  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                  url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                } as any}
+              />
+              {mockPharmacies.map(pharmacy => (
+                <Marker key={pharmacy.id} position={[pharmacy.lat, pharmacy.lng]}>
+                  <Popup {...{className: "rounded-xl"} as any}>
+                    <div className="p-2 font-sans">
+                      <strong className="block mb-1 text-surface">{pharmacy.name}</strong>
+                      <span className="text-gray-600 text-sm">{pharmacy.distance} away</span>
+                    </div>
+                  </Popup>
+                </Marker>
+              ))}
+            </MapContainer>
+          </div>
         </Card>
-      </div>
     </div>
   );
 }
