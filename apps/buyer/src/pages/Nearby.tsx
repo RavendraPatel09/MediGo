@@ -1,9 +1,8 @@
-import React from 'react';
+import { useState } from 'react';
 import { Card, Button, Input } from '@medicycle/ui';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { MapPin, Navigation2, Search } from 'lucide-react';
-import { motion } from 'framer-motion';
 
 // Quick fix for leaflet marker icons in React
 import L from 'leaflet';

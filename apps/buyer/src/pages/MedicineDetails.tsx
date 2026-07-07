@@ -1,11 +1,11 @@
 import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Card, Button } from '@medicycle/ui';
-import { ArrowLeft, ShoppingCart, ShieldCheck, Clock, MapPin, Star } from 'lucide-react';
+import { useCartStore } from '@medicycle/store';
+import { ShieldCheck, Star, Truck, MapPin, ArrowLeft, Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function MedicineDetails() {
-  const { id } = useParams();
   const navigate = useNavigate();
 
   return (
