@@ -1,5 +1,6 @@
-import React from 'react';
-import { motion, HTMLMotionProps } from 'framer-motion';
+import * as React from 'react';
+import { motion } from 'framer-motion';
+import type { HTMLMotionProps } from 'framer-motion';
 import { cn } from '@medicycle/utils';
 
 interface ButtonProps extends HTMLMotionProps<'button'> {
@@ -11,14 +12,14 @@ interface ButtonProps extends HTMLMotionProps<'button'> {
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', isLoading, children, ...props }, ref) => {
     
-    const variants = {
+    const variants: Record<string, string> = {
       primary: 'bg-primary text-white hover:bg-primary/90 shadow-lg shadow-primary/25',
       secondary: 'bg-surfaceSecondary text-white hover:bg-surfaceSecondary/80',
       outline: 'border border-white/10 text-white hover:bg-white/5',
       ghost: 'text-white/70 hover:text-white hover:bg-white/5',
     };
     
-    const sizes = {
+    const sizes: Record<string, string> = {
       sm: 'h-8 px-3 text-sm rounded-lg',
       md: 'h-10 px-4 text-sm rounded-xl',
       lg: 'h-12 px-6 text-base rounded-xl',
