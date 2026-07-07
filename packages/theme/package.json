@@ -13,6 +13,7 @@
   },
   "exports": {
     ".": "./index.ts",
-    "./global.css": "./global.css"
+    "./global.css": "./global.css",
+    "./tailwind.config": "./tailwind.config.ts"
   }
 }
