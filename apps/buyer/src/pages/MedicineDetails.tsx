@@ -1,8 +1,6 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, Button } from '@medicycle/ui';
-import { useCartStore } from '@medicycle/store';
-import { ShieldCheck, Star, Truck, MapPin, ArrowLeft, Heart } from 'lucide-react';
+import { ShieldCheck, Star, MapPin, ArrowLeft, Clock, ShoppingCart } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function MedicineDetails() {
