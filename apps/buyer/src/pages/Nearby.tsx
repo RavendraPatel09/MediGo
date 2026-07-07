@@ -95,6 +95,7 @@ export default function Nearby() {
             </MapContainer>
           </div>
         </Card>
+      </div>
     </div>
   );
 }
