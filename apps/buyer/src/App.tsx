@@ -7,6 +7,10 @@ import Marketplace from './pages/Marketplace';
 import NotFound from './pages/NotFound';
 import { useAuthStore } from '@medicycle/store';
 
+import Register from './pages/Register';
+import Nearby from './pages/Nearby';
+import MedicineDetails from './pages/MedicineDetails';
+
 // A simple protected route wrapper
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -22,6 +26,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<RoleSelection />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         
         {/* Protected Buyer Routes */}
         <Route 
@@ -33,6 +38,8 @@ export default function App() {
           }
         >
           <Route path="marketplace" element={<Marketplace />} />
+          <Route path="marketplace/:id" element={<MedicineDetails />} />
+          <Route path="nearby" element={<Nearby />} />
           {/* Default to marketplace if user hits /buyer */}
           <Route index element={<Navigate to="marketplace" replace />} />
         </Route>
