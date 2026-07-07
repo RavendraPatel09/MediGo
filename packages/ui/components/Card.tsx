@@ -1,5 +1,6 @@
-import React from 'react';
-import { motion, HTMLMotionProps } from 'framer-motion';
+import * as React from 'react';
+import { motion } from 'framer-motion';
+import type { HTMLMotionProps } from 'framer-motion';
 import { cn } from '@medicycle/utils';
 
 interface CardProps extends HTMLMotionProps<'div'> {
