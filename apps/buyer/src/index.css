@@ -1,4 +1,4 @@
-@import '@medicycle/theme/global.css';
+@import '../../../packages/theme/global.css';
 
 @tailwind base;
 @tailwind components;
