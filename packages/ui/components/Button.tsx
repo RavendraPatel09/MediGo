@@ -46,7 +46,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             </svg>
           </span>
         ) : null}
-        <span className={cn(isLoading && 'opacity-0')}>{children}</span>
+        <span className={cn(isLoading && 'opacity-0')}>{children as React.ReactNode}</span>
       </motion.button>
     );
   }

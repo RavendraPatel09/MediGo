@@ -1,4 +1,3 @@
-import React from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { useAuthStore } from '@medicycle/store';
 import { ShoppingCart, LogOut, PackageSearch, MapPin } from 'lucide-react';

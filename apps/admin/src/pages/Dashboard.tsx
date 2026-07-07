@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Card } from '@medicycle/ui';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Users, Store, ShieldAlert, Activity } from 'lucide-react';

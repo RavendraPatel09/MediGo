@@ -1,6 +1,6 @@
-import React from 'react';
+
 import { Card, Button, Input } from '@medicycle/ui';
-import { Search, Shield, Ban, UserCheck } from 'lucide-react';
+import { Search, Shield, Ban } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const mockUsers = [

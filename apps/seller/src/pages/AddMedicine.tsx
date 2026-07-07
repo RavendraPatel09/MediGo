@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Card, Button, Input } from '@medicycle/ui';
 import { UploadCloud, CheckCircle2, Scan } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';

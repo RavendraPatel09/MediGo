@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { Card, Input, Button } from '@medicycle/ui';
 import { Search, Filter, MapPin, Pill, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';

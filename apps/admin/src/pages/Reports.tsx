@@ -1,7 +1,5 @@
-import React from 'react';
 import { Card, Button } from '@medicycle/ui';
 import { Download, AlertTriangle, FileText } from 'lucide-react';
-import { motion } from 'framer-motion';
 
 export default function Reports() {
   return (

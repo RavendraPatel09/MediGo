@@ -1,6 +1,6 @@
-import React from 'react';
+
 import { Card, Button, Input } from '@medicycle/ui';
-import { MessageSquare, MoreVertical, Check } from 'lucide-react';
+import { MoreVertical, Check } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const mockMessages = [

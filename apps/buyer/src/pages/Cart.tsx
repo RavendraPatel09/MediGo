@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Card, Button } from '@medicycle/ui';
 import { useCartStore } from '@medicycle/store';
 import { Trash2, Plus, Minus, ArrowRight } from 'lucide-react';

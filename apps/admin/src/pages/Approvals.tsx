@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Card, Button } from '@medicycle/ui';
 import { Check, X, ShieldAlert, FileText } from 'lucide-react';
 import { motion } from 'framer-motion';
