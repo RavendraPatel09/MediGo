@@ -10,6 +10,9 @@ import { useAuthStore } from '@medicycle/store';
 import Register from './pages/Register';
 import Nearby from './pages/Nearby';
 import MedicineDetails from './pages/MedicineDetails';
+import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
+import Orders from './pages/Orders';
 
 // A simple protected route wrapper
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -40,6 +43,9 @@ export default function App() {
           <Route path="marketplace" element={<Marketplace />} />
           <Route path="marketplace/:id" element={<MedicineDetails />} />
           <Route path="nearby" element={<Nearby />} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="checkout" element={<Checkout />} />
+          <Route path="orders" element={<Orders />} />
           {/* Default to marketplace if user hits /buyer */}
           <Route index element={<Navigate to="marketplace" replace />} />
         </Route>
