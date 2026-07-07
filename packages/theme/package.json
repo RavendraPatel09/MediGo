@@ -10,5 +10,9 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "typecheck": "tsc --noEmit"
+  },
+  "exports": {
+    ".": "./index.ts",
+    "./global.css": "./global.css"
   }
 }
