@@ -1,5 +1,6 @@
 {
   "name": "@medicycle/config",
   "version": "1.0.0",
-  "main": "index.ts"
+  "main": "index.ts",
+  "types": "dist/index.d.ts"
 }
