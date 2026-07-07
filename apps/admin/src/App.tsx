@@ -3,9 +3,11 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import AdminLayout from './layouts/AdminLayout';
 import { useAuthStore } from '@medicycle/store';
 
-// Placeholders for now
-const Dashboard = () => <div className="text-white">Dashboard Content</div>;
-const Login = () => <div className="text-white">Login Content</div>;
+import Dashboard from './pages/Dashboard';
+import Login from './pages/Login';
+import Users from './pages/Users';
+import Approvals from './pages/Approvals';
+import Reports from './pages/Reports';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -30,7 +32,11 @@ export default function App() {
           }
         >
           <Route index element={<Dashboard />} />
-          {/* Add more routes here later */}
+          <Route path="users" element={<Users />} />
+          <Route path="sellers" element={<Users />} />
+          <Route path="medicines" element={<Users />} />
+          <Route path="approvals" element={<Approvals />} />
+          <Route path="reports" element={<Reports />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/admin" replace />} />
