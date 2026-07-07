@@ -74,25 +74,6 @@ export default function Nearby() {
               <Input placeholder="Search location..." className="pl-10 bg-surface/90 backdrop-blur-md border-white/20" />
             </div>
           </div>
-          <MapContainer 
-            center={[51.505, -0.09]} 
-            zoom={13} 
-            className="w-full h-full rounded-lg z-0"
-            zoomControl={false}
-          >
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            {mockPharmacies.map(pharmacy => (
-              <Marker key={pharmacy.id} position={[pharmacy.lat, pharmacy.lng]}>
-                <Popup className="rounded-xl">
-                  <div className="p-2 font-sans">
-                    <strong className="block mb-1 text-surface">{pharmacy.name}</strong>
-                    <span className="text-gray-600 text-sm">{pharmacy.distance} away</span>
-                  </div>
-                </Popup>
-              </Marker>
             ))}
           </MapContainer>
         </Card>

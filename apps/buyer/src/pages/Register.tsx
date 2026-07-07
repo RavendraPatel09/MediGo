@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Button, Card, Input } from '@medicycle/ui';
 import { ThreeBackground } from '../components/ThreeBackground';
-import { ArrowLeft, Mail, User, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, Mail, User } from 'lucide-react';
 
 export default function Register() {
   const navigate = useNavigate();

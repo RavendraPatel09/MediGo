@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { motion } from 'framer-motion';
 import { ShoppingBag, Store, ShieldCheck } from 'lucide-react';
 import { useAuthStore } from '@medicycle/store';
