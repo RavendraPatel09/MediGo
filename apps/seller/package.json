@@ -10,8 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@medicycle/store": "workspace:*",
+    "@medicycle/ui": "workspace:*",
+    "@medicycle/utils": "workspace:*",
+    "framer-motion": "^11.18.2",
+    "lucide-react": "^0.300.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
+    "react-router-dom": "^6.30.4",
     "recharts": "^3.9.2"
   },
   "devDependencies": {
