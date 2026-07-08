@@ -1,4 +1,5 @@
 
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ShoppingBag, Store, ShieldCheck } from 'lucide-react';
 import { useAuthStore } from '@medicycle/store';
@@ -41,16 +42,16 @@ const roles = [
 export default function App() {
   const setRole = useAuthStore((state) => state.setRole);
 
+  const navigate = useNavigate();
+
   const handleRoleSelect = (roleId: typeof roles[number]['id']) => {
     setRole(roleId);
-    // In a real app, we'd navigate to the respective login page.
-    // For now, we will just alert to verify the interaction.
     if (roleId === 'seller') {
-      window.location.href = 'http://localhost:3001'; // Mock seller app URL
+      window.location.href = 'http://localhost:3001'; 
     } else if (roleId === 'admin') {
-      window.location.href = 'http://localhost:3002'; // Mock admin app URL
+      window.location.href = 'http://localhost:3002'; 
     } else {
-      alert('Navigate to Buyer Login');
+      navigate('/login');
     }
   };
 
