@@ -1,18 +1,27 @@
 import React, { useState } from 'react';
 import { Card, Button, Input } from '@medicycle/ui';
-import { useCartStore } from '@medicycle/store';
+import { useCartStore, useOrdersStore } from '@medicycle/store';
 import { CreditCard, CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
 export default function Checkout() {
-  const { total, clearCart } = useCartStore();
+  const { total, items, clearCart } = useCartStore();
+  const addOrder = useOrdersStore(state => state.addOrder);
   const navigate = useNavigate();
   const [success, setSuccess] = useState(false);
 
   const handleCheckout = (e: React.FormEvent) => {
     e.preventDefault();
     setSuccess(true);
+    
+    // Create the order
+    addOrder({
+      total: total + 2, // including platform fee
+      status: 'transit',
+      items: [...items]
+    });
+
     setTimeout(() => {
       clearCart();
       navigate('/buyer/orders');

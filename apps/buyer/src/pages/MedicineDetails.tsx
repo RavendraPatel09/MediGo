@@ -1,10 +1,40 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Card, Button } from '@medicycle/ui';
 import { ShieldCheck, Star, MapPin, ArrowLeft, Clock, ShoppingCart } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useMedicinesStore, useCartStore } from '@medicycle/store';
 
 export default function MedicineDetails() {
   const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
+  const getMedicine = useMedicinesStore(state => state.getMedicine);
+  const addItem = useCartStore(state => state.addItem);
+  
+  const medicine = getMedicine(id || '');
+
+  if (!medicine) {
+    return (
+      <div className="text-center py-20">
+        <h2 className="text-2xl font-bold mb-4">Medicine not found</h2>
+        <Button onClick={() => navigate('/buyer/marketplace')}>Back to Marketplace</Button>
+      </div>
+    );
+  }
+
+  const handleAddToCart = () => {
+    addItem({
+      medicineId: medicine.id,
+      name: medicine.name,
+      price: medicine.price,
+      quantity: 1,
+      pharmacy: medicine.pharmacy
+    });
+  };
+
+  const handleBuyNow = () => {
+    handleAddToCart();
+    navigate('/buyer/cart');
+  };
 
   return (
     <div className="max-w-5xl mx-auto space-y-8">
@@ -36,15 +66,15 @@ export default function MedicineDetails() {
         <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-6">
           <div>
             <div className="flex justify-between items-start mb-2">
-              <h1 className="text-4xl font-bold">Paracetamol 500mg</h1>
+              <h1 className="text-4xl font-bold">{medicine.name}</h1>
             </div>
-            <p className="text-lg text-white/50">Pain Reliever & Fever Reducer • 50 Tablets</p>
+            <p className="text-lg text-white/50">{medicine.type} • {medicine.stock} in stock</p>
           </div>
 
           <div className="flex items-end gap-3 pb-6 border-b border-white/10">
-            <span className="text-4xl font-bold text-primary">$5.00</span>
-            <span className="text-lg text-white/40 line-through mb-1">$12.00</span>
-            <span className="bg-primary/20 text-primary px-2 py-0.5 rounded text-sm mb-2 ml-2">Save 58%</span>
+            <span className="text-4xl font-bold text-primary">${medicine.price.toFixed(2)}</span>
+            <span className="text-lg text-white/40 line-through mb-1">${medicine.originalPrice.toFixed(2)}</span>
+            <span className="bg-primary/20 text-primary px-2 py-0.5 rounded text-sm mb-2 ml-2">Save {Math.round((1 - medicine.price / medicine.originalPrice) * 100)}%</span>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -52,14 +82,14 @@ export default function MedicineDetails() {
               <Clock className="w-5 h-5 text-warning" />
               <div>
                 <p className="text-xs text-white/40">Expiry Date</p>
-                <p className="font-medium">October 2027</p>
+                <p className="font-medium">{medicine.expiry}</p>
               </div>
             </div>
             <div className="flex items-center gap-3 text-white/70">
               <MapPin className="w-5 h-5 text-accent" />
               <div>
                 <p className="text-xs text-white/40">Location</p>
-                <p className="font-medium">2.4 km away</p>
+                <p className="font-medium">{medicine.distance}</p>
               </div>
             </div>
           </div>
@@ -68,19 +98,23 @@ export default function MedicineDetails() {
             <div className="flex justify-between items-center">
               <div>
                 <p className="text-sm font-medium">Sold by</p>
-                <p className="text-primary font-semibold">City Health Pharmacy</p>
+                <p className="text-primary font-semibold">{medicine.pharmacy}</p>
               </div>
               <div className="flex items-center gap-1 text-sm bg-white/5 px-2 py-1 rounded">
                 <Star className="w-4 h-4 text-warning fill-warning" /> 4.9 (128 reviews)
               </div>
             </div>
           </Card>
+          
+          <div className="text-white/70 text-sm leading-relaxed">
+            {medicine.description}
+          </div>
 
           <div className="flex gap-4 pt-4">
-            <Button size="lg" className="flex-1 flex gap-2">
+            <Button size="lg" className="flex-1 flex gap-2" onClick={handleAddToCart}>
               <ShoppingCart className="w-5 h-5" /> Add to Cart
             </Button>
-            <Button size="lg" variant="secondary" className="flex-1">
+            <Button size="lg" variant="secondary" className="flex-1" onClick={handleBuyNow}>
               Buy Now
             </Button>
           </div>

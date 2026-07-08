@@ -1,5 +1,5 @@
 import { Outlet, Link } from 'react-router-dom';
-import { useAuthStore } from '@medicycle/store';
+import { useAuthStore, useCartStore } from '@medicycle/store';
 import { ShoppingCart, LogOut, PackageSearch, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -26,12 +26,14 @@ export default function BuyerLayout() {
         </div>
         
         <div className="flex items-center gap-4">
-          <button className="relative p-2 text-white/70 hover:text-white transition-colors rounded-full hover:bg-white/5">
+          <Link to="/buyer/cart" className="relative p-2 text-white/70 hover:text-white transition-colors rounded-full hover:bg-white/5">
             <ShoppingCart className="w-5 h-5" />
-            <span className="absolute top-0 right-0 w-4 h-4 bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center">
-              2
-            </span>
-          </button>
+            {useCartStore((state) => state.items.length) > 0 && (
+              <span className="absolute top-0 right-0 w-4 h-4 bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                {useCartStore((state) => state.items.length)}
+              </span>
+            )}
+          </Link>
           
           <div className="h-6 w-[1px] bg-white/10" />
           

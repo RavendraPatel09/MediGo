@@ -1,16 +1,21 @@
-
+import { useState } from 'react';
 import { Card, Input, Button } from '@medicycle/ui';
 import { Search, Filter, MapPin, Pill, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
-
-// Mock Data
-const mockMedicines = [
-  { id: 1, name: 'Paracetamol 500mg', type: 'Pain Reliever', price: '$5.00', originalPrice: '$12.00', expiry: '2027-10', distance: '2.4 km away', pharmacy: 'City Health' },
-  { id: 2, name: 'Amoxicillin 250mg', type: 'Antibiotic', price: '$8.50', originalPrice: '$18.00', expiry: '2026-12', distance: '6.0 km away', pharmacy: 'Green Cross' },
-  { id: 3, name: 'Ibuprofen 400mg', type: 'Anti-inflammatory', price: '$4.20', originalPrice: '$9.00', expiry: '2028-01', distance: '12 km away', pharmacy: 'MediCare Hub' },
-];
+import { useNavigate } from 'react-router-dom';
+import { useMedicinesStore } from '@medicycle/store';
 
 export default function Marketplace() {
+  const medicines = useMedicinesStore(state => state.medicines);
+  const navigate = useNavigate();
+  const [search, setSearch] = useState('');
+
+  const filteredMedicines = medicines.filter(med => 
+    med.name.toLowerCase().includes(search.toLowerCase()) ||
+    med.type.toLowerCase().includes(search.toLowerCase()) ||
+    med.pharmacy.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="space-y-8">
       {/* Header & Search */}
@@ -25,7 +30,12 @@ export default function Marketplace() {
         <div className="flex w-full md:w-auto gap-3">
           <div className="relative w-full md:w-64">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
-            <Input placeholder="Search medicines..." className="pl-10" />
+            <Input 
+              placeholder="Search medicines..." 
+              className="pl-10" 
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
           </div>
           <Button variant="outline" className="px-3">
             <Filter className="w-4 h-4" />
@@ -35,14 +45,14 @@ export default function Marketplace() {
 
       {/* Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {mockMedicines.map((med, index) => (
+        {filteredMedicines.map((med, index) => (
           <motion.div
             key={med.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
           >
-            <Card glass className="p-0 overflow-hidden flex flex-col group cursor-pointer">
+            <Card glass className="p-0 overflow-hidden flex flex-col group cursor-pointer" onClick={() => navigate(`/buyer/marketplace/${med.id}`)}>
               {/* Image Placeholder */}
               <div className="h-48 bg-white/5 relative overflow-hidden flex items-center justify-center">
                 <div className="absolute inset-0 bg-gradient-to-t from-surface to-transparent z-10" />
@@ -56,8 +66,8 @@ export default function Marketplace() {
                 <div className="flex justify-between items-start mb-2">
                   <h3 className="text-lg font-semibold truncate pr-4">{med.name}</h3>
                   <div className="text-right flex-shrink-0">
-                    <div className="text-lg font-bold text-primary">{med.price}</div>
-                    <div className="text-xs text-white/40 line-through">{med.originalPrice}</div>
+                    <div className="text-lg font-bold text-primary">${med.price.toFixed(2)}</div>
+                    <div className="text-xs text-white/40 line-through">${med.originalPrice.toFixed(2)}</div>
                   </div>
                 </div>
                 
