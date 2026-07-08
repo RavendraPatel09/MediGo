@@ -2,14 +2,18 @@
 import { Card, Button, Input } from '@medicycle/ui';
 import { Search, Shield, Ban } from 'lucide-react';
 import { motion } from 'framer-motion';
-
-const mockUsers = [
-  { id: 'USR-001', name: 'Alice Smith', role: 'Buyer', email: 'alice@example.com', status: 'Active', joined: 'Oct 2026' },
-  { id: 'USR-002', name: 'City Health', role: 'Seller', email: 'store@cityhealth.com', status: 'Verified', joined: 'Sep 2026' },
-  { id: 'USR-003', name: 'John Doe', role: 'Buyer', email: 'john@example.com', status: 'Suspended', joined: 'Oct 2026' },
-];
+import { useUsersStore } from '@medicycle/store';
+import { useState } from 'react';
 
 export default function Users() {
+  const users = useUsersStore(state => state.users);
+  const updateUserStatus = useUsersStore(state => state.updateUserStatus);
+  const [search, setSearch] = useState('');
+
+  const filteredUsers = users.filter(user => 
+    user.name.toLowerCase().includes(search.toLowerCase()) || 
+    user.email.toLowerCase().includes(search.toLowerCase())
+  );
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
       <div className="flex justify-between items-end">
@@ -23,7 +27,12 @@ export default function Users() {
         <div className="p-4 border-b border-white/5 flex gap-4">
           <div className="relative flex-1 max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
-            <Input placeholder="Search users by name or email..." className="pl-10" />
+            <Input 
+              placeholder="Search users by name or email..." 
+              className="pl-10" 
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
           </div>
           <Button variant="outline">Filter by Role</Button>
         </div>
@@ -41,7 +50,7 @@ export default function Users() {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {mockUsers.map((user, index) => (
+              {filteredUsers.map((user, index) => (
                 <motion.tr 
                   key={user.id} 
                   initial={{ opacity: 0, y: 10 }} 
@@ -76,7 +85,13 @@ export default function Users() {
                       <button className="p-2 hover:bg-white/10 rounded-lg text-white/60 hover:text-white transition-colors" title="Manage Permissions">
                         <Shield className="w-4 h-4" />
                       </button>
-                      <button className="p-2 hover:bg-red-500/10 rounded-lg text-white/60 hover:text-red-400 transition-colors" title="Suspend User">
+                      <button 
+                        onClick={() => updateUserStatus(user.id, user.status === 'Suspended' ? 'Active' : 'Suspended')}
+                        className={`p-2 rounded-lg transition-colors ${
+                          user.status === 'Suspended' ? 'text-success hover:bg-success/10' : 'text-white/60 hover:text-red-400 hover:bg-red-500/10'
+                        }`} 
+                        title={user.status === 'Suspended' ? 'Activate User' : 'Suspend User'}
+                      >
                         <Ban className="w-4 h-4" />
                       </button>
                     </div>
