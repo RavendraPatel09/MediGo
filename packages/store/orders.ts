@@ -12,6 +12,7 @@ export interface Order {
 interface OrdersState {
   orders: Order[];
   addOrder: (order: Omit<Order, 'id' | 'date'>) => void;
+  updateOrderStatus: (id: string, status: Order['status']) => void;
 }
 
 const mockOrders: Order[] = [
@@ -37,5 +38,8 @@ export const useOrdersStore = create<OrdersState>((set) => ({
       },
       ...state.orders
     ]
+  })),
+  updateOrderStatus: (id, status) => set((state) => ({
+    orders: state.orders.map(o => o.id === id ? { ...o, status } : o)
   }))
 }));

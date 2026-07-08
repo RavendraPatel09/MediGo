@@ -2,15 +2,53 @@ import { useState } from 'react';
 import { Card, Button, Input } from '@medicycle/ui';
 import { UploadCloud, CheckCircle2, Scan } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useMedicinesStore, useAuthStore } from '@medicycle/store';
+import { useNavigate } from 'react-router-dom';
 
 export default function AddMedicine() {
   const [ocrStatus, setOcrStatus] = useState<'idle' | 'scanning' | 'success'>('idle');
+  const navigate = useNavigate();
+  const addMedicine = useMedicinesStore(state => state.addMedicine);
+  const user = useAuthStore(state => state.user);
+
+  const [formData, setFormData] = useState({
+    name: '',
+    batch: '',
+    expiry: '',
+    price: '',
+    stock: ''
+  });
 
   const handleUpload = () => {
     setOcrStatus('scanning');
     setTimeout(() => {
       setOcrStatus('success');
+      setFormData({
+        name: 'Amoxicillin 500mg',
+        batch: 'BXT-889102',
+        expiry: '2027-11',
+        price: '12.50',
+        stock: '50'
+      });
     }, 2000);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    addMedicine({
+      id: `MED-${Math.floor(Math.random() * 90000) + 10000}`,
+      name: formData.name,
+      type: 'Prescription', // Defaulting for mock
+      price: parseFloat(formData.price),
+      originalPrice: parseFloat(formData.price) * 1.5,
+      expiry: formData.expiry,
+      distance: '0 km away',
+      pharmacy: user?.name || 'Seller Pharmacy',
+      description: 'Auto-extracted medicine from OCR.',
+      stock: parseInt(formData.stock),
+      sellerId: user?.id || 'unknown'
+    });
+    navigate('/seller/inventory');
   };
 
   return (
@@ -52,38 +90,49 @@ export default function AddMedicine() {
 
         {/* Form Fields */}
         <Card glass className="md:col-span-2 p-6">
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div className="grid grid-cols-2 gap-4">
               <div className="col-span-2">
                 <Input 
                   label="Medicine Name" 
-                  defaultValue={ocrStatus === 'success' ? 'Amoxicillin 500mg' : ''} 
+                  value={formData.name}
+                  onChange={(e) => setFormData(prev => ({...prev, name: e.target.value}))}
+                  required
                 />
               </div>
               <Input 
                 label="Batch Number" 
-                defaultValue={ocrStatus === 'success' ? 'BXT-889102' : ''} 
+                value={formData.batch}
+                onChange={(e) => setFormData(prev => ({...prev, batch: e.target.value}))}
+                required
               />
               <Input 
                 label="Expiry Date" 
                 type="month" 
-                defaultValue={ocrStatus === 'success' ? '2027-11' : ''} 
+                value={formData.expiry}
+                onChange={(e) => setFormData(prev => ({...prev, expiry: e.target.value}))}
+                required
               />
               <Input 
                 label="Price ($)" 
                 type="number" 
-                defaultValue={ocrStatus === 'success' ? '12.50' : ''} 
+                step="0.01"
+                value={formData.price}
+                onChange={(e) => setFormData(prev => ({...prev, price: e.target.value}))}
+                required
               />
               <Input 
                 label="Stock Quantity" 
                 type="number" 
-                defaultValue={ocrStatus === 'success' ? '50' : ''} 
+                value={formData.stock}
+                onChange={(e) => setFormData(prev => ({...prev, stock: e.target.value}))}
+                required
               />
             </div>
             
             <div className="pt-4 flex justify-end gap-3">
-              <Button variant="ghost">Cancel</Button>
-              <Button variant="primary">List Medicine</Button>
+              <Button type="button" variant="ghost" onClick={() => navigate('/seller/inventory')}>Cancel</Button>
+              <Button type="submit" variant="primary">List Medicine</Button>
             </div>
           </form>
         </Card>

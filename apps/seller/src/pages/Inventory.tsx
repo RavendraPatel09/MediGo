@@ -3,15 +3,19 @@ import { Card, Button, Input } from '@medicycle/ui';
 import { Search, Plus, Filter, Edit, Trash2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-
-const mockInventory = [
-  { id: 'MED-001', name: 'Paracetamol 500mg', stock: 145, price: '$5.00', expiry: 'Oct 2027', status: 'Active' },
-  { id: 'MED-002', name: 'Amoxicillin 250mg', stock: 12, price: '$8.50', expiry: 'Dec 2026', status: 'Low Stock' },
-  { id: 'MED-003', name: 'Vitamin C 1000mg', stock: 0, price: '$12.00', expiry: 'Jan 2028', status: 'Out of Stock' },
-];
+import { useMedicinesStore } from '@medicycle/store';
+import { useState } from 'react';
 
 export default function Inventory() {
   const navigate = useNavigate();
+  const medicines = useMedicinesStore(state => state.medicines);
+  const deleteMedicine = useMedicinesStore(state => state.deleteMedicine);
+  const [search, setSearch] = useState('');
+
+  const filteredInventory = medicines.filter(med => 
+    med.name.toLowerCase().includes(search.toLowerCase()) ||
+    med.id.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
@@ -29,7 +33,12 @@ export default function Inventory() {
         <div className="p-4 border-b border-white/5 flex flex-wrap gap-4">
           <div className="relative flex-1 min-w-[200px]">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
-            <Input placeholder="Search inventory..." className="pl-10" />
+            <Input 
+              placeholder="Search inventory..." 
+              className="pl-10" 
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
           </div>
           <Button variant="outline" className="flex items-center gap-2">
             <Filter className="w-4 h-4" /> Filters
@@ -50,40 +59,46 @@ export default function Inventory() {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {mockInventory.map((item, index) => (
-                <motion.tr 
-                  key={item.id} 
-                  initial={{ opacity: 0, y: 10 }} 
-                  animate={{ opacity: 1, y: 0 }} 
-                  transition={{ delay: index * 0.05 }}
-                  className="hover:bg-white/5 transition-colors"
-                >
-                  <td className="p-4 font-medium text-white">{item.name}</td>
-                  <td className="p-4 text-white/60">{item.id}</td>
-                  <td className="p-4">{item.stock}</td>
-                  <td className="p-4">{item.price}</td>
-                  <td className="p-4 text-white/60">{item.expiry}</td>
-                  <td className="p-4">
-                    <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${
-                      item.status === 'Active' ? 'bg-success/20 text-success' :
-                      item.status === 'Low Stock' ? 'bg-warning/20 text-warning' :
-                      'bg-red-500/20 text-red-400'
-                    }`}>
-                      {item.status}
-                    </span>
-                  </td>
-                  <td className="p-4 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <button className="p-2 hover:bg-white/10 rounded-lg text-white/60 hover:text-white transition-colors">
-                        <Edit className="w-4 h-4" />
-                      </button>
-                      <button className="p-2 hover:bg-red-500/10 rounded-lg text-white/60 hover:text-red-400 transition-colors">
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </td>
-                </motion.tr>
-              ))}
+              {filteredInventory.map((item, index) => {
+                const status = item.stock > 10 ? 'Active' : item.stock > 0 ? 'Low Stock' : 'Out of Stock';
+                return (
+                  <motion.tr 
+                    key={item.id} 
+                    initial={{ opacity: 0, y: 10 }} 
+                    animate={{ opacity: 1, y: 0 }} 
+                    transition={{ delay: index * 0.05 }}
+                    className="hover:bg-white/5 transition-colors"
+                  >
+                    <td className="p-4 font-medium text-white">{item.name}</td>
+                    <td className="p-4 text-white/60">{item.id}</td>
+                    <td className="p-4">{item.stock}</td>
+                    <td className="p-4">${item.price.toFixed(2)}</td>
+                    <td className="p-4 text-white/60">{item.expiry}</td>
+                    <td className="p-4">
+                      <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${
+                        status === 'Active' ? 'bg-success/20 text-success' :
+                        status === 'Low Stock' ? 'bg-warning/20 text-warning' :
+                        'bg-red-500/20 text-red-400'
+                      }`}>
+                        {status}
+                      </span>
+                    </td>
+                    <td className="p-4 text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <button className="p-2 hover:bg-white/10 rounded-lg text-white/60 hover:text-white transition-colors">
+                          <Edit className="w-4 h-4" />
+                        </button>
+                        <button 
+                          onClick={() => deleteMedicine(item.id)}
+                          className="p-2 hover:bg-red-500/10 rounded-lg text-white/60 hover:text-red-400 transition-colors"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </motion.tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

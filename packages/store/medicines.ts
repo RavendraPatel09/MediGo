@@ -17,6 +17,7 @@ export interface Medicine {
 interface MedicinesState {
   medicines: Medicine[];
   addMedicine: (med: Medicine) => void;
+  deleteMedicine: (id: string) => void;
   getMedicine: (id: string) => Medicine | undefined;
 }
 
@@ -65,5 +66,6 @@ const mockMedicines: Medicine[] = [
 export const useMedicinesStore = create<MedicinesState>((set, get) => ({
   medicines: mockMedicines,
   addMedicine: (med) => set((state) => ({ medicines: [...state.medicines, med] })),
+  deleteMedicine: (id) => set((state) => ({ medicines: state.medicines.filter(m => m.id !== id) })),
   getMedicine: (id) => get().medicines.find(m => m.id === id)
 }));

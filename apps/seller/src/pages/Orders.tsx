@@ -2,13 +2,11 @@
 import { Card, Button } from '@medicycle/ui';
 import { Package, Truck, CheckCircle2, ChevronDown } from 'lucide-react';
 import { motion } from 'framer-motion';
-
-const mockSellerOrders = [
-  { id: 'ORD-99120', customer: 'Alice Smith', date: 'Oct 15, 2026', total: '$32.50', status: 'pending', items: ['Amoxicillin 250mg', 'Vitamin C'] },
-  { id: 'ORD-72941', customer: 'John Doe', date: 'Oct 12, 2026', total: '$14.00', status: 'delivered', items: ['Paracetamol 500mg (2x)'] },
-];
+import { useOrdersStore } from '@medicycle/store';
 
 export default function Orders() {
+  const orders = useOrdersStore(state => state.orders);
+  const updateOrderStatus = useOrdersStore(state => state.updateOrderStatus);
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       <div className="flex justify-between items-end">
@@ -22,14 +20,14 @@ export default function Orders() {
       </div>
       
       <div className="space-y-4">
-        {mockSellerOrders.map((order, index) => (
+        {orders.map((order, index) => (
           <motion.div key={order.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}>
             <Card glass className="p-6">
               <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 border-b border-white/5 pb-4 mb-4">
                 <div>
                   <div className="flex items-center gap-3 mb-1">
                     <span className="text-sm text-white/50">Order #{order.id}</span>
-                    <span className="text-sm font-medium px-2 py-0.5 rounded bg-white/10">{order.customer}</span>
+                    <span className="text-sm font-medium px-2 py-0.5 rounded bg-white/10">Buyer Customer</span>
                   </div>
                   <div className="font-semibold">{order.date}</div>
                 </div>
@@ -40,11 +38,16 @@ export default function Orders() {
                       <CheckCircle2 className="w-4 h-4" /> Delivered
                     </span>
                   ) : (
-                    <Button size="sm" variant="primary" className="gap-2 bg-warning text-warning-foreground hover:bg-warning/90">
+                    <Button 
+                      size="sm" 
+                      variant="primary" 
+                      className="gap-2 bg-warning text-warning-foreground hover:bg-warning/90"
+                      onClick={() => updateOrderStatus(order.id, 'delivered')}
+                    >
                       <Truck className="w-4 h-4" /> Ship Order
                     </Button>
                   )}
-                  <div className="text-xl font-bold text-primary">{order.total}</div>
+                  <div className="text-xl font-bold text-primary">${order.total.toFixed(2)}</div>
                 </div>
               </div>
               
@@ -53,7 +56,7 @@ export default function Orders() {
                   <div className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center">
                     <Package className="w-5 h-5 text-white/30" />
                   </div>
-                  <p className="text-sm font-medium">{order.items.join(', ')}</p>
+                  <p className="text-sm font-medium">{order.items.map(i => `${i.name} (${i.quantity}x)`).join(', ')}</p>
                 </div>
                 
                 <Button variant="ghost" size="sm">Print Label</Button>
