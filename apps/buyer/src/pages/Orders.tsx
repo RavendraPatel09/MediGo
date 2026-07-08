@@ -2,19 +2,16 @@
 import { Card, Button } from '@medicycle/ui';
 import { Package, Truck, CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
-
-const mockOrders = [
-  { id: 'ORD-72941', date: 'Oct 12, 2026', total: '$14.00', status: 'delivered', items: ['Paracetamol 500mg (2x)'] },
-  { id: 'ORD-99120', date: 'Oct 15, 2026', total: '$32.50', status: 'transit', items: ['Amoxicillin 250mg', 'Vitamin C'] },
-];
+import { useOrdersStore } from '@medicycle/store';
 
 export default function Orders() {
+  const orders = useOrdersStore(state => state.orders);
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       <h1 className="text-3xl font-bold">My Orders</h1>
       
       <div className="space-y-4">
-        {mockOrders.map((order, index) => (
+        {orders.map((order, index) => (
           <motion.div
             key={order.id}
             initial={{ opacity: 0, y: 10 }}
@@ -38,7 +35,7 @@ export default function Orders() {
                       <Truck className="w-4 h-4" /> In Transit
                     </span>
                   )}
-                  <div className="text-lg font-bold ml-4">{order.total}</div>
+                  <div className="text-lg font-bold ml-4">${order.total.toFixed(2)}</div>
                 </div>
               </div>
               
@@ -48,7 +45,7 @@ export default function Orders() {
                     <Package className="w-6 h-6 text-white/30" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium">{order.items.join(', ')}</p>
+                    <p className="text-sm font-medium">{order.items.map(i => `${i.name} (${i.quantity}x)`).join(', ')}</p>
                   </div>
                 </div>
                 
