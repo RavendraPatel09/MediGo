@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 export default function BuyerLayout() {
   const logout = useAuthStore((state) => state.logout);
   const user = useAuthStore((state) => state.user);
+  const cartItemsCount = useCartStore((state) => state.items.length);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -28,9 +29,9 @@ export default function BuyerLayout() {
         <div className="flex items-center gap-4">
           <Link to="/buyer/cart" className="relative p-2 text-white/70 hover:text-white transition-colors rounded-full hover:bg-white/5">
             <ShoppingCart className="w-5 h-5" />
-            {useCartStore((state) => state.items.length) > 0 && (
+            {cartItemsCount > 0 && (
               <span className="absolute top-0 right-0 w-4 h-4 bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center">
-                {useCartStore((state) => state.items.length)}
+                {cartItemsCount}
               </span>
             )}
           </Link>
