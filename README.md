@@ -123,30 +123,4 @@ pnpm typecheck
 ```
 
 ---
-
-## 🗺️ Roadmap
-- [ ] Backend/API integration
-- [ ] Authentication with persistent sessions
-- [ ] Payment gateway integration
-- [ ] Real-time order tracking
-- [ ] Push notifications
-
----
-
-## 🤝 Contributing
-
-Contributions, issues, and feature requests are welcome. Feel free to open an issue or submit a pull request.
-
-## 📄 License
-
-This project is licensed under the ISC License.
-
----
-
-## 🏷️ Suggested GitHub Topics
-
-`react` `typescript` `vite` `monorepo` `pnpm` `pnpm-workspace` `zustand` `medicine-delivery` `pharmacy` `healthcare` `ecommerce` `marketplace` `leaflet` `three-js` `framer-motion` `admin-dashboard`
-
-## 📝 Suggested GitHub "About" Description
-
-> Multi-role medicine delivery platform (Buyer, Seller, Admin) built as a pnpm monorepo with React, TypeScript, and Vite.
+Thankyou 
