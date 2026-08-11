@@ -7,3 +7,4 @@ export default {
     "../../packages/ui/**/*.{js,ts,jsx,tsx}",
   ],
 }
+
